@@ -16,7 +16,7 @@ from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join('artifacts',"preprocessor.pkl")
+    preprocessor_obj_file_path=os.path.join('artifacts',"proprocessor.pkl")
 
 class DataTransformation:
     def __init__(self):
@@ -24,7 +24,7 @@ class DataTransformation:
 
     def get_data_transformer_object(self):
         '''
-        This function is responsible for data transformation
+        This function si responsible for data trnasformation
         
         '''
         try:
@@ -61,7 +61,7 @@ class DataTransformation:
             preprocessor=ColumnTransformer(
                 [
                 ("num_pipeline",num_pipeline,numerical_columns),
-                ("cat_pipeline",cat_pipeline,categorical_columns)
+                ("cat_pipelines",cat_pipeline,categorical_columns)
 
                 ]
 
@@ -101,18 +101,18 @@ class DataTransformation:
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
 
-            train_arr=np.c_[
-                input_feature_train_arr,np.array(target_feature_train_df)
+            train_arr = np.c_[
+                input_feature_train_arr, np.array(target_feature_train_df)
             ]
-            test_arr=np.c_[
-                input_feature_test_arr,np.array(target_feature_test_df)
-            ]
+            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
-            logging.info(f"Saved preprocessing object.")  
+            logging.info(f"Saved preprocessing object.")
 
             save_object(
+
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj
+
             )
 
             return (
@@ -122,4 +122,3 @@ class DataTransformation:
             )
         except Exception as e:
             raise CustomException(e,sys)
-        
